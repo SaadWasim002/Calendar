@@ -1,84 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
+import { useState, useEffect } from 'react';
 import Calendar from './components/Calendar';
 import EventForm from './components/EventForm';
+import Header from './components/Header';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import { saveEvents } from './utils/storage';
-import './App.css';
 import { useDispatch } from 'react-redux';
 import { addEvent, updateEvent, deleteEvent, moveEvent } from './features/events/eventSlice';
 import { useEvents } from './hooks/useEvents';
-import { addDays } from 'date-fns';
+import './App.css';
 
 export default function App() {
+  
   const events = useEvents();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [modal, setModal] = useState({ open: false, event: null, date: null });
-  const [view, setView] = useState('monthly');
-  const [filter, setFilter] = useState('all');
   const dispatch = useDispatch();
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+  const [form, setForm] = useState({
+    open: false,
+    event: null,
+    date: null
+  });
 
   useEffect(() => {
     saveEvents(events);
   }, [events]);
 
-  const openModal = (date, event = null) => setModal({ open: true, date, event });
-  const closeModal = () => setModal({ open: false, event: null, date: null });
+  const openForm = (date, event = null) =>
+    setForm({
+      open: true,
+      date,
+      event
+    });
+
+  const closeForm = () =>
+    setForm({
+      open: false,
+      event: null,
+      date: null
+    });
 
   const handleSave = (data) => {
-    
     if (data.id) {
       dispatch(updateEvent(data));
     } else {
       dispatch(addEvent(data));
     }
-    closeModal();
+    closeForm();
     saveEvents(events);
   };
 
 
   const handleDelete = (id) => {
     dispatch(deleteEvent(id));
-    closeModal();
+    closeForm();
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app-container">
-        <header>
-          <h1>Event Calendar</h1>
-          <div className="controls">
-            <button onClick={() => setView('monthly')}>Monthly</button>
-            <button onClick={() => setView('weekly')}>Weekly</button>
-            <select onChange={e => setFilter(e.target.value)} value={filter}>
-              <option value="all">All Categories</option>
-              <option value="work">Work</option>
-              <option value="personal">Personal</option>
-              <option value="others">Others</option>
-            </select>
-          </div>
-        </header>
+        <Header
+          search={search}
+          setSearch={setSearch}
+          filter={filter}
+          setFilter={setFilter} />
         <Calendar
-          view={view}
           filter={filter}
           selectedDate={selectedDate}
           onNavigate={setSelectedDate}
-          onDateClick={openModal}
-          onEventDrop={(id, date) => {
+          onClickDate={openForm}
+          search={search}
+          onDrop={(id, date) => {
             const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
             dispatch(moveEvent({ id, date: localDate.toISOString() }));
           }}
         />
 
-        {modal.open && (
+       {form.open ? (
           <EventForm
-            date={modal.date}
-            event={modal.event}
+            date={form.date}
+            event={form.event}
             onSave={handleSave}
             onDelete={handleDelete}
-            onClose={closeModal}
+            onClose={closeForm}
           />
-        )}
+        ) : null}
       </div>
     </DndProvider>
   );

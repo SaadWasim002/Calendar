@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDrop } from 'react-dnd';
 import { format, isSameDay } from 'date-fns';
 import EventItem from './EventItem';
@@ -18,8 +17,16 @@ const DateBox = ({
                 className={`day-cell ${!isSameDay(day, new Date()) ? '' : 'today'}`}
                 onClick={onClick}
             >
-                <div className="date-label">{format(day, 'd')}</div>
-                {events.map(ev => <EventItem key={ev.id} event={ev} onClick={() => onEventClick(ev)}/>)}
+                <div className="date-label">
+                    {format(day, 'd')}
+                </div>
+                {events.map(event =>
+                     <EventItem
+                        key={event.id}
+                        event={event}
+                        onClick={() => onEventClick(event)}
+                    />
+                )}
             </div>
         </>
     )

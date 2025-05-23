@@ -1,21 +1,82 @@
 @import "tailwindcss";
 
-body { margin: 0; font-family: sans-serif; }
-.app-container { padding: 20px; }
-header { display: flex; justify-content: space-between; align-items: center; }
-.calendar { margin-top: 20px; }
-.grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-.day-cell { border: 1px solid #ddd; min-height: 100px; position: relative; padding: 4px; }
-.day-cell.today { background: #f0f8ff; }
-.date-label { position: absolute; top: 4px; right: 4px; font-size: 0.8em; }
-.event-item { margin: 2px 0; padding: 2px 4px; border-radius: 4px; cursor: move; color: white; font-size: 0.8em; }
-.modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
-.modal { background: white; padding: 20px; border-radius: 8px; width: 300px; }
-.modal label { display: block; margin-bottom: 10px; }
-.modal input, .modal textarea, .modal select { width: 100%; }
-.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top:10px;}
+body{
+    margin: 0;
+    font-family: sans-serif;
+}
+.app-container {
+    padding: 20px;
+}
+header {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+}
+.calendar { 
+    margin-top: 20px; 
+}
+.grid { 
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+.day-cell {
+    border: 1px solid #ddd; 
+    min-height: 100px; 
+    position: relative; 
+    padding: 4px; 
+}
+.day-cell.today { 
+    background: #f0f8ff; 
+}
+.date-label { 
+    position: absolute; 
+    top: 4px; 
+    right: 4px; 
+    font-size: 0.8em;
+}
+.event-item { 
+    margin: 2px 0; 
+    padding: 2px 4px; 
+    border-radius: 4px; 
+    cursor: move; 
+    color: white; 
+    font-size: 0.8em; 
+}
+.modal-backdrop { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: rgba(0,0,0,0.5); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; }
+.modal { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    width: 300px; }
+.modal label { 
+    display: block; 
+    margin-bottom: 10px; 
+}
+.modal input, .modal textarea, .modal select {
+     width: 100%; 
+}
+.actions { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top:10px;}
 .error {
   color: red;
   font-weight: bold;
   margin-top: 10px;
+}
+.controls input[type="text"] {
+  padding: 5px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
